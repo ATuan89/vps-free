@@ -2,11 +2,14 @@ services:
   windows:
     image: dockurr/windows
     container_name: windows
+    dns:                      # ← THÊM 2 DÒNG NÀY
+      - 8.8.8.8
+      - 1.1.1.1
     environment:
       VERSION: "10"
       USERNAME: "MASTER"
       PASSWORD: "admin@123"
-      RAM_SIZE: "12G"        # ← Changed from 4G
+      RAM_SIZE: "8G"        # ← Changed from 4G
       CPU_CORES: "4"
       DISK_SIZE: "400G"
       DISK2_SIZE: "100G"

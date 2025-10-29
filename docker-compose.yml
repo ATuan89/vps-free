@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   dc01:
     image: diegogslomp/samba-ad-dc:latest
@@ -19,18 +21,18 @@ services:
       - dc01_var:/usr/local/samba/var
     restart: unless-stopped
     ports:
-      - "8053:53"
-      - "8053:53/udp"
-      - "88:88"
+      - "8053:53"          # DNS
+      - "8053:53/udp"      # DNS UDP
+      - "88:88"          # Kerberos
       - "88:88/udp"
-      - "389:389"
+      - "389:389"        # LDAP
       - "389:389/udp"
-      - "445:445"
-      - "464:464"
+      - "445:445"        # SMB (join domain)
+      - "464:464"        # Kerberos password change
       - "464:464/udp"
-      - "636:636"
-      - "3268:3268"
-      - "3269:3269"
+      - "636:636"        # LDAPS
+      - "3268:3268"      # Global Catalog
+      - "3269:3269"      # Global Catalog SSL
 
   client01:
     image: ubuntu:24.04
@@ -45,7 +47,11 @@ services:
 
 networks:
   lan-lab:
-    external: true
+    name: lan-lab
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.10.0/24
 
 volumes:
   dc01_etc:
