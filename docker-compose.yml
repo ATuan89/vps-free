@@ -1,0 +1,53 @@
+services:
+  dc01:
+    image: diegogslomp/samba-ad-dc:latest
+    container_name: dc01
+    hostname: dc01.lab.local
+    privileged: true
+    networks:
+      lan-lab:
+        ipv4_address: 192.168.10.10
+    environment:
+      - REALM=LAB.LOCAL
+      - DOMAIN=LAB
+      - ADMIN_PASS=P@ssw0rd123
+      - DNS_FORWARDER=8.8.8.8
+      - BIND_NETWORK_INTERFACES=false
+    volumes:
+      - dc01_etc:/usr/local/samba/etc
+      - dc01_private:/usr/local/samba/private
+      - dc01_var:/usr/local/samba/var
+    restart: unless-stopped
+    ports:
+      - "8053:53"
+      - "8053:53/udp"
+      - "88:88"
+      - "88:88/udp"
+      - "389:389"
+      - "389:389/udp"
+      - "445:445"
+      - "464:464"
+      - "464:464/udp"
+      - "636:636"
+      - "3268:3268"
+      - "3269:3269"
+
+  client01:
+    image: ubuntu:24.04
+    container_name: client01
+    hostname: client01.lab.local
+    networks:
+      lan-lab:
+        ipv4_address: 192.168.10.20
+    command: tail -f /dev/null
+    depends_on:
+      - dc01
+
+networks:
+  lan-lab:
+    external: true
+
+volumes:
+  dc01_etc:
+  dc01_private:
+  dc01_var:

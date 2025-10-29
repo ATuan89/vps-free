@@ -1,0 +1,19 @@
+services:
+  samba-dc:
+    image: nowsci/samba-domain:latest
+    container_name: samba-ad-dc
+    hostname: dc1
+    network_mode: host
+    privileged: true
+    restart: unless-stopped
+    environment:
+      - DOMAIN=LAB                 # ← NetBIOS name (short)
+      - DOMAIN_REALM=LAB.LOCAL     # ← Must be FQDN (different from DOMAIN)
+      - DOMAINPASS=P@ssw0rd123!    # ← Admin password
+      - HOSTNAME=dc1
+      - HOSTIP=172.16.0.10
+      - DNSFORWARDER=8.8.8.8
+      - TZ=UTC
+    volumes:
+      - /tmp/samba-data:/var/lib/samba
+      - /etc/localtime:/etc/localtime:ro
