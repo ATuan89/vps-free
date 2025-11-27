@@ -1,0 +1,27 @@
+services:
+  windows11:
+    image: dockurr/windows
+    container_name: windows11
+    privileged: true
+    security_opt:
+      - apparmor=unconfined
+      - seccomp=unconfined
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/kvm
+      - /dev/net/tun
+    ports:
+      - "8006:8006"
+      - "3389:3389/tcp"
+      - "3389:3389/udp"
+    volumes:
+      - /tmp/windows_storage_11:/storage
+    environment:
+      VERSION: "11"
+      CPU_CORES: "4"
+      RAM_SIZE: "8G"
+      DISK_SIZE: "400G"
+      DISK2_SIZE: "100G"
+    restart: always
+    stop_grace_period: 2m
