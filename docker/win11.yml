@@ -20,7 +20,7 @@ services:
     environment:
       VERSION: "11"
       CPU_CORES: "4"
-      RAM_SIZE: "8G"
+      RAM_SIZE: "12G"
       DISK_SIZE: "400G"
       DISK2_SIZE: "100G"
     restart: always
