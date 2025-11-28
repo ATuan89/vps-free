@@ -1,0 +1,3 @@
+./setup /configure Configuration.xml
+
+irm https://get.activated.win | iex
