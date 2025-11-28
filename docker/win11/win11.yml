@@ -17,6 +17,7 @@ services:
       - "3389:3389/udp"
     volumes:
       - /tmp/windows_storage_11:/storage
+      - .../vps-free/docker/win11/data:/shared
     environment:
       VERSION: "11"
       CPU_CORES: "4"
