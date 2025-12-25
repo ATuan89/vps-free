@@ -1,0 +1,28 @@
+services:
+  macos:
+    image: dockurr/macos
+    container_name: macos
+    privileged: true
+    security_opt:
+      - apparmor=unconfined
+      - seccomp=unconfined
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/kvm
+      - /dev/net/tun
+    ports:
+      - "8006:8006"          # Web-based noVNC viewer
+      - "5900:5900/tcp"      # VNC (optional, for direct VNC client)
+      - "5900:5900/udp"
+    volumes:
+      - /tmp/macos_storage:/storage          # Persistent disk & installation files
+      - /workspaces/vps-free/docker/win11:/shared   # Your shared folder (appears in macOS)
+    environment:
+      VERSION: "14"          # macOS Sonoma (latest); options: "13" (Ventura), "12" (Monterey), etc.
+      CPU_CORES: "4"
+      RAM_SIZE: "12G"
+      DISK_SIZE: "400G"      # Main disk (adjust as needed)
+      # DISK2_SIZE not supported for macOS image
+    restart: always
+    stop_grace_period: 2m
